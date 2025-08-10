@@ -34,12 +34,11 @@ class TennisGameAnalyzer:
         self.last_fault = ""
         self.last_bounce_side = None
 
-        self.out = None  # متغير حفظ الفيديو سيتم تهيئته في run()
+        self.out = None
 
     def _select_points_callback(self, event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONDOWN and len(self.points) < 6:
             self.points.append((x, y))
-            print(f"Point {len(self.points)}/6 selected: ({x}, {y})")
 
     def _interactive_setup(self):
         ret, first_frame = self.cap.read()
@@ -75,7 +74,6 @@ class TennisGameAnalyzer:
                 return False
             elif key == ord('r'):
                 self.points = []
-                print("Points reset.")
             elif key == ord('c'):
                 if len(self.points) == 6:
                     table_pts = self.points[:4]
@@ -100,12 +98,9 @@ class TennisGameAnalyzer:
                         (net_mid_x, h_max)
                     ], dtype=np.int32)
 
-                    print("Setup complete.")
                     self.setup_complete = True
                     cv2.destroyAllWindows()
                     return True
-                else:
-                    print(f"Select exactly 6 points! Currently: {len(self.points)}")
 
     def _detect_bounce(self):
         if len(self.ball_trajectory) < 3:
@@ -174,8 +169,8 @@ class TennisGameAnalyzer:
     def _draw_elements(self, frame, fps):
         cv2.polylines(frame, [self.table_poly], True, (255, 255, 0), 2)
         cv2.line(frame, self.net_line[0], self.net_line[1], (0, 0, 255), 2)
-        cv2.polylines(frame, [self.side1_poly], True, (0, 255, 0), 2)  # أخضر Player 1
-        cv2.polylines(frame, [self.side2_poly], True, (255, 0, 0), 2)  # أزرق Player 2
+        cv2.polylines(frame, [self.side1_poly], True, (0, 255, 0), 2)
+        cv2.polylines(frame, [self.side2_poly], True, (255, 0, 0), 2)
 
         if len(self.ball_trajectory) > 1:
             pts = np.array(list(self.ball_trajectory), np.int32).reshape((-1, 1, 2))
@@ -207,12 +202,11 @@ class TennisGameAnalyzer:
             print("Setup was not completed. Exiting.")
             return
 
-        # خصائص الفيديو لحفظه
         width = int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         height = int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         fps = self.cap.get(cv2.CAP_PROP_FPS)
 
-        fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # ترميز mp4
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         self.out = cv2.VideoWriter('output.mp4', fourcc, fps, (width, height))
 
         while self.cap.isOpened():
@@ -239,7 +233,6 @@ class TennisGameAnalyzer:
             fps_calc = 1 / (time.time() - start_time)
             final_frame = self._draw_elements(annotated_frame, fps_calc)
 
-            # حفظ الإطار في ملف الفيديو
             self.out.write(final_frame)
 
             cv2.imshow("Table Tennis Analysis", final_frame)
@@ -252,7 +245,7 @@ class TennisGameAnalyzer:
 
 if __name__ == '__main__':
     MODEL_PATH = "runs/detect/ball_detector/weights/best.pt"
-    VIDEO_PATH = r"C:\Users\SPS\Desktop\1\IMG_7370.MOV"
+    VIDEO_PATH = "path_to_your_video.mp4"
 
     if not os.path.exists(MODEL_PATH):
         print(f"Error: Model file not found at '{MODEL_PATH}'")
