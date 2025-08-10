@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 1
+names: ['ball']
+
+roboflow:
+  workspace: task1-bxvrc
+  project: tenis-ball-laoaj
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/task1-bxvrc/tenis-ball-laoaj/dataset/1
