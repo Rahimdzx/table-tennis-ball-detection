@@ -1,7 +1,7 @@
 from ultralytics import YOLO
 
-model_path = r"C:\Users\SPS\Desktop\1\runs\detect\ball_detector\weights\best.pt"
-data_yaml = r"C:\Users\SPS\Desktop\1\yolo\data.yaml"
+model_path = r""
+data_yaml = r""
 
 def evaluate_model():
     print("Loading model...")

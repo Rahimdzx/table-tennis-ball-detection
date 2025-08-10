@@ -30,4 +30,4 @@ model.train(
 )
 
 # ✅ 5. Save final model path
-print("\n🎯 Training complete. Model saved to 'runs/detect/ball_detector/weights/best.pt'")
+print("\n Training complete. Model saved to 'runs/detect/ball_detector/weights/best.pt'")

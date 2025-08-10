@@ -5,7 +5,7 @@ import cv2
 model = YOLO("runs/detect/ball_detector/weights/best.pt")
 
 # Video path
-video_path = r"C:\Users\SPS\Desktop\1\IMG_7370.MOV"
+video_path = r""
 
 # Open video
 cap = cv2.VideoCapture(video_path)
